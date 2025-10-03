@@ -5,6 +5,10 @@
   "private": true,
   "scripts": {
     "build": "./extism-js index.cjs -o crystal.wasm",
-    "check": "biome check --write"
+    "check": "biome check --write",
+    "test:load_versions": "extism call crystal.wasm load_versions --wasi --allow-host=crystal-lang.org",
+    "test:locate_executables": "extism call crystal.wasm locate_executables --wasi",
+    "test:register_tool": "extism call crystal.wasm register_tool --wasi",
+    "test:resolve_version": "extism call crystal.wasm resolve_version --wasi"
   }
 }
