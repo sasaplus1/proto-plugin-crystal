@@ -3,5 +3,10 @@
   "packages": [
     "binaryen@latest",
     "gh@latest"
-  ]
+  ],
+  "shell": {
+    "init_hook": [
+      "./init.sh"
+    ]
+  }
 }
