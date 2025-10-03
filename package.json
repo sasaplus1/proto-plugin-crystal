@@ -2,5 +2,9 @@
   "devDependencies": {
     "@biomejs/biome": "2.2.5"
   },
-  "private": true
+  "private": true,
+  "scripts": {
+    "build": "./extism-js index.cjs -o crystal.wasm",
+    "check": "biome check --write"
+  }
 }
