@@ -5,6 +5,11 @@ set -euo pipefail
 __main() {
   unset -f __main
 
+  if [ -x './extism-js' ]
+  then
+    exit
+  fi
+
   local os=
   case "$(uname -s)" in
     Darwin)
@@ -36,7 +41,8 @@ __main() {
   gh release download --repo extism/js-pdk v1.5.1 --pattern "*-${arch}-${os}-*" --skip-existing
 
   local -r file="$(basename "$(find . -maxdepth 1 -name "*-${arch}-${os}-*.gz")")"
-  printf -- '  %s' "$file" >> "${file}.sha256"
+  local -r checksum="$(cat "${file}.sha256")"
+  printf -- '%s  %s' "$checksum" "$file" > "${file}.sha256"
 
   local shasum=
   type shasum &>/dev/null && shasum='shasum -a 256'
@@ -47,14 +53,13 @@ __main() {
     exit 1
   fi
 
-  if "$shasum" --check --status "${file}.sha256"
+  if ! "$shasum" --check --status "${file}.sha256"
   then
-    echo "Checksum verification succeeded"
-  else
     echo "Checksum verification failed" >&2
     exit 1
   fi
 
+  rm -f "${file}.sha256"
   gunzip "$file"
 
   local -r base="${file%.gz}"
