@@ -161,10 +161,47 @@ function resolve_version() {
   Host.outputString(JSON.stringify(output));
 }
 
+function detect_version_files() {
+  // const input = JSON.parse(Host.inputString());
+
+  const output = {
+    files: ['.crystal-version', '.tool-versions'],
+  };
+
+  Host.outputString(JSON.stringify(output));
+}
+
+function parse_version_file() {
+  const input = JSON.parse(Host.inputString());
+  const content = input.content;
+  const file = input.file;
+
+  let version = '';
+
+  if (file === '.crystal-version') {
+    version = content.trim();
+  } else if (file === '.tool-versions') {
+    const lines = content.split('\n');
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (trimmed.startsWith('crystal ')) {
+        version = trimmed.slice(8).trim();
+        break;
+      }
+    }
+  }
+
+  const output = { version };
+
+  Host.outputString(JSON.stringify(output));
+}
+
 module.exports = {
   register_tool,
   load_versions,
   download_prebuilt,
   locate_executables,
   resolve_version,
+  detect_version_files,
+  parse_version_file,
 };

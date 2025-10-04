@@ -191,3 +191,48 @@ describe('resolve_version', () => {
     assert.strictEqual(result.version, '1.10.0');
   });
 });
+
+describe('detect_version_files', () => {
+  it('should return supported version files', async () => {
+    const result = await callExtism('detect_version_files');
+
+    assert.deepStrictEqual(result, {
+      files: ['.crystal-version', '.tool-versions']
+    });
+  });
+});
+
+describe('parse_version_file', () => {
+  it('should parse .crystal-version file', async () => {
+    const result = await callExtism('parse_version_file', {
+      file: '.crystal-version',
+      content: '1.10.1\n'
+    });
+
+    assert.deepStrictEqual(result, {
+      version: '1.10.1'
+    });
+  });
+
+  it('should parse .tool-versions file with crystal entry', async () => {
+    const result = await callExtism('parse_version_file', {
+      file: '.tool-versions',
+      content: 'nodejs 20.0.0\ncrystal 1.11.0\nruby 3.2.0\n'
+    });
+
+    assert.deepStrictEqual(result, {
+      version: '1.11.0'
+    });
+  });
+
+  it('should return empty version for .tool-versions without crystal entry', async () => {
+    const result = await callExtism('parse_version_file', {
+      file: '.tool-versions',
+      content: 'nodejs 20.0.0\nruby 3.2.0\n'
+    });
+
+    assert.deepStrictEqual(result, {
+      version: ''
+    });
+  });
+});

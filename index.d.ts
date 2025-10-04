@@ -4,4 +4,6 @@ declare module 'main' {
   export function download_prebuilt(): I32;
   export function locate_executables(): I32;
   export function resolve_version(): I32;
+  export function detect_version_files(): I32;
+  export function parse_version_file(): I32;
 }
