@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  - push
+  - pull_request
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    strategy:
+      fail-fast: false
+      matrix:
+        command:
+          - npm run check
+          - npm test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # 5.0.0
+        with:
+          node-version-file: 'package.json'
+      - id: npm-cache
+        run: echo "dir=$(npm config get cache)" | tee -a "$GITHUB_OUTPUT"
+      - id: cache-key
+        run: >
+          echo 'suffix=${{ format('{0}-{1}-{2}', runner.os, runner.arch, hashFiles('package-lock.json')) }}'
+          | tee -a "$GITHUB_OUTPUT"
+      - id: restore-cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            node_modules
+            ${{ steps.npm-cache.outputs.dir }}
+          key: npm-${{ steps.cache-key.outputs.suffix }}
+          restore-keys: |
+            npm-
+      - if: steps.restore-cache.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+        env:
+          NPM_CONFIG_AUDIT: false
+          NPM_CONFIG_PROGRESS: false
+          NPM_CONFIG_PREFER_OFFLINE: true
+      - run: npm rebuild && npm run prepare --if-present
+      - run: ${{ matrix.command }}
+      - if: matrix.command == 'npm test'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: crystal.wasm
+          path: crystal.wasm
+      - if: github.ref_name == 'main'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            node_modules
+            ${{ steps.npm-cache.outputs.dir }}
+          key: npm-${{ steps.cache-key.outputs.suffix }}
+  e2e:
+    name: crystal on ${{ matrix.os }}
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    needs:
+      - test
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: moonrepo/setup-toolchain@3927d571963592235146e8e0b5261206954796a2 # v0.6.0
+        with:
+          cache: false
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: crystal.wasm
+      - run: uname -a
+      - run: proto plugin add crystal "file://$GITHUB_WORKSPACE/crystal.wasm"
+        env:
+          PROTO_CONFIG_MODE: global
+      - run: proto versions crystal
+      - run: proto install crystal 1.17.1
+      - run: proto run crystal -- --version
+      - run: crystal --version
+      - run: shards --version
+      - run: shards install && crystal run main.cr
+        working-directory: crystal/test
