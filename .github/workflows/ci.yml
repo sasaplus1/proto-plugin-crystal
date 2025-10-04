@@ -15,8 +15,8 @@ jobs:
       fail-fast: false
       matrix:
         command:
-          - npm run check
-          - npm test
+          - npx biome ci
+          - devbox run -- npm test
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -26,6 +26,9 @@ jobs:
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # 5.0.0
         with:
           node-version-file: 'package.json'
+      - uses: jetify-com/devbox-install-action@a0d2d53632934ae004f878c840055956d9f741b0 # v0.14.0
+        with:
+          enable-cache: true
       - id: npm-cache
         run: echo "dir=$(npm config get cache)" | tee -a "$GITHUB_OUTPUT"
       - id: cache-key
