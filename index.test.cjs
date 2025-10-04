@@ -80,7 +80,7 @@ describe('load_versions', () => {
 
     assert.ok(Array.isArray(result.versions));
     assert.ok(result.versions.length > 0);
-    assert.ok(result.versions.every(v => typeof v === 'string'));
+    assert.ok(result.versions.every((v) => typeof v === 'string'));
     assert.ok(!result.versions.includes('nightly'));
   });
 });
@@ -152,11 +152,15 @@ describe('locate_executables', () => {
 
 describe('resolve_version', () => {
   it('should resolve "latest" to a version number', async () => {
-    const result = await callExtism('resolve_version', {
-      initial: 'latest'
-    }, {
-      allowedHosts: ['crystal-lang.org']
-    });
+    const result = await callExtism(
+      'resolve_version',
+      {
+        initial: 'latest'
+      },
+      {
+        allowedHosts: ['crystal-lang.org']
+      }
+    );
 
     assert.ok(result.version);
     assert.notStrictEqual(result.version, 'latest');
@@ -164,11 +168,15 @@ describe('resolve_version', () => {
   });
 
   it('should resolve "stable" to a version number', async () => {
-    const result = await callExtism('resolve_version', {
-      initial: 'stable'
-    }, {
-      allowedHosts: ['crystal-lang.org']
-    });
+    const result = await callExtism(
+      'resolve_version',
+      {
+        initial: 'stable'
+      },
+      {
+        allowedHosts: ['crystal-lang.org']
+      }
+    );
 
     assert.ok(result.version);
     assert.notStrictEqual(result.version, 'stable');

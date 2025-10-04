@@ -3,7 +3,7 @@ const versionsJsonUrl = 'https://crystal-lang.org/api/versions.json';
 function fetchJson(url) {
   const request = {
     method: 'GET',
-    url,
+    url
   };
   const response = Http.request(request);
   if (response.status !== 200) {
@@ -19,7 +19,7 @@ function register_tool() {
     name: 'Crystal',
     type: 'language',
     plugin_version: '0.1.0',
-    minimum_proto_version: '0.53.0',
+    minimum_proto_version: '0.53.0'
   };
 
   Host.outputString(JSON.stringify(output));
@@ -50,7 +50,7 @@ function download_prebuilt() {
   const supportedCombinations = {
     linux: ['x64', 'arm64'],
     macos: ['x64', 'arm64'],
-    windows: ['x64'],
+    windows: ['x64']
   };
 
   if (!supportedCombinations[os] || !supportedCombinations[os].includes(arch)) {
@@ -59,7 +59,7 @@ function download_prebuilt() {
 
   const archMap = {
     x64: 'x86_64',
-    arm64: 'aarch64',
+    arm64: 'aarch64'
   };
   const archName = archMap[arch] || 'x86_64';
 
@@ -86,7 +86,7 @@ function download_prebuilt() {
 
   const output = {
     download_url: downloadUrl,
-    download_name: archiveName,
+    download_name: archiveName
   };
 
   if (archivePrefix) {
@@ -107,27 +107,27 @@ function locate_executables() {
   switch (os) {
     case 'linux':
       exes.crystal = {
-        exe_path: 'bin/crystal',
+        exe_path: 'bin/crystal'
       };
       exes.shards = {
-        exe_path: 'bin/shards',
+        exe_path: 'bin/shards'
       };
       break;
     case 'macos':
       // macOS has special layout
       exes.crystal = {
-        exe_path: 'bin/crystal',
+        exe_path: 'bin/crystal'
       };
       exes.shards = {
-        exe_path: 'embedded/bin/shards',
+        exe_path: 'embedded/bin/shards'
       };
       break;
     case 'windows':
       exes.crystal = {
-        exe_path: 'crystal.exe',
+        exe_path: 'crystal.exe'
       };
       exes.shards = {
-        exe_path: 'shards.exe',
+        exe_path: 'shards.exe'
       };
       break;
     default:
@@ -165,7 +165,7 @@ function detect_version_files() {
   // const input = JSON.parse(Host.inputString());
 
   const output = {
-    files: ['.crystal-version', '.tool-versions'],
+    files: ['.crystal-version', '.tool-versions']
   };
 
   Host.outputString(JSON.stringify(output));
@@ -203,5 +203,5 @@ module.exports = {
   locate_executables,
   resolve_version,
   detect_version_files,
-  parse_version_file,
+  parse_version_file
 };
