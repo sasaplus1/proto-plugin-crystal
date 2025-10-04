@@ -54,11 +54,12 @@ jobs:
           NPM_CONFIG_PREFER_OFFLINE: true
       - run: npm rebuild && npm run prepare --if-present
       - run: ${{ matrix.command }}
-      - if: matrix.command == 'npm test'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: crystal.wasm
           path: crystal.wasm
+          overwrite: true
+          retention-days: 1
       - if: github.ref_name == 'main'
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
