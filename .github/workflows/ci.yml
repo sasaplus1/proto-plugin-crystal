@@ -104,4 +104,4 @@ jobs:
       - run: crystal --version
       - run: shards --version
       - run: shards install && crystal run main.cr
-        working-directory: crystal/test
+        working-directory: test
