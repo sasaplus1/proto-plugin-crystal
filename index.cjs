@@ -46,6 +46,9 @@ function download_prebuilt() {
 
   // Get host environment from Config
   const hostEnvStr = Config.get('host_environment');
+  if (!hostEnvStr) {
+    throw new Error('host_environment config is not available');
+  }
   const hostEnv = JSON.parse(hostEnvStr);
   const os = hostEnv.os;
   const arch = hostEnv.arch;
@@ -102,6 +105,9 @@ function download_prebuilt() {
 function locate_executables() {
   // Get host environment from Config
   const hostEnvStr = Config.get('host_environment');
+  if (!hostEnvStr) {
+    throw new Error('host_environment config is not available');
+  }
   const hostEnv = JSON.parse(hostEnvStr);
   const os = hostEnv.os;
 
