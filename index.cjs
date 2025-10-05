@@ -42,7 +42,25 @@ function load_versions() {
 function download_prebuilt() {
   const input = JSON.parse(Host.inputString());
 
-  throw new Error(`DEBUG INPUT: ${JSON.stringify(input, null, 2)}`);
+  // Try to get config - check if Config object exists
+  const debugInfo = { input };
+  try {
+    if (typeof Config !== 'undefined' && Config.get) {
+      debugInfo.host_env_via_Config = Config.get('host_environment');
+    }
+  } catch (e) {
+    debugInfo.config_error = e.message;
+  }
+
+  try {
+    if (Host.getConfig) {
+      debugInfo.host_env_via_Host = Host.getConfig('host_environment');
+    }
+  } catch (e) {
+    debugInfo.host_getConfig_error = e.message;
+  }
+
+  throw new Error(`DEBUG: ${JSON.stringify(debugInfo, null, 2)}`);
 
   const version = input.context.version;
   const env = input.context.env || {};
