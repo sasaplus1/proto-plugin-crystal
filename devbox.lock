@@ -49,7 +49,7 @@
         }
       }
     },
-    "extism-cli@latest": {
+    "extism-cli@1.6.3": {
       "last_modified": "2025-09-18T16:33:27Z",
       "resolved": "github:NixOS/nixpkgs/f4b140d5b253f5e2a1ff4e5506edbf8267724bde#extism-cli",
       "source": "devbox-search",
