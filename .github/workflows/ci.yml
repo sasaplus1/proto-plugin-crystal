@@ -107,7 +107,7 @@ jobs:
         working-directory: test
       - run: proto install crystal latest
       - run: echo "1.17.0" > .crystal-version
-      - run: proto install
+      - run: proto install crystal
       - run: crystal --version | grep "1.17.0"
   release:
     if: github.ref_type == 'tag'
