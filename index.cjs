@@ -69,20 +69,17 @@ function download_prebuilt() {
   };
   const archName = archMap[arch] || 'x86_64';
 
-  let archiveName, archivePrefix;
+  let archiveName;
 
   switch (os) {
     case 'linux':
       archiveName = `crystal-${version}-1-linux-${archName}-bundled.tar.gz`;
-      archivePrefix = `crystal-${version}-1`;
       break;
     case 'macos':
       archiveName = `crystal-${version}-1-darwin-universal.tar.gz`;
-      archivePrefix = `crystal-${version}-1`;
       break;
     case 'windows':
       archiveName = `crystal-${version}-windows-x86_64-msvc-unsupported.zip`;
-      archivePrefix = null;
       break;
     default:
       throw new Error(`Unsupported OS: ${os}`);
@@ -95,14 +92,14 @@ function download_prebuilt() {
     download_name: archiveName
   };
 
-  if (archivePrefix) {
-    output.archive_prefix = archivePrefix;
-  }
-
   Host.outputString(JSON.stringify(output));
 }
 
 function locate_executables() {
+  const input = JSON.parse(Host.inputString());
+  const version = input.context.version;
+  const prefix = `crystal-${version}-1`;
+
   // Get host environment from Config
   const hostEnvStr = Config.get('host_environment');
   if (!hostEnvStr) {
@@ -116,21 +113,21 @@ function locate_executables() {
   switch (os) {
     case 'linux':
       exes.crystal = {
-        exe_path: 'bin/crystal',
+        exe_path: `${prefix}/bin/crystal`,
         primary: true
       };
       exes.shards = {
-        exe_path: 'bin/shards'
+        exe_path: `${prefix}/bin/shards`
       };
       break;
     case 'macos':
       // macOS has special layout
       exes.crystal = {
-        exe_path: 'bin/crystal',
+        exe_path: `${prefix}/embedded/bin/crystal`,
         primary: true
       };
       exes.shards = {
-        exe_path: 'embedded/bin/shards'
+        exe_path: `${prefix}/embedded/bin/shards`
       };
       break;
     case 'windows':

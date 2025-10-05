@@ -100,9 +100,6 @@ jobs:
           PROTO_CONFIG_MODE: global
       - run: proto versions crystal
       - run: proto install crystal 1.17.1
-      - run: ls -la $HOME/.proto/tools/crystal/ || echo "crystal tools directory not found"
-      - run: ls -la $HOME/.proto/tools/crystal/1.17.1/ || echo "1.17.1 directory not found"
-      - run: find $HOME/.proto/tools/crystal/1.17.1/ -type f -name "crystal" || echo "crystal binary not found"
       - run: proto run crystal -- --version
       - run: crystal --version
       - run: shards --version
