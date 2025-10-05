@@ -116,7 +116,8 @@ function locate_executables() {
   switch (os) {
     case 'linux':
       exes.crystal = {
-        exe_path: 'bin/crystal'
+        exe_path: 'bin/crystal',
+        primary: true
       };
       exes.shards = {
         exe_path: 'bin/shards'
@@ -125,7 +126,8 @@ function locate_executables() {
     case 'macos':
       // macOS has special layout
       exes.crystal = {
-        exe_path: 'bin/crystal'
+        exe_path: 'bin/crystal',
+        primary: true
       };
       exes.shards = {
         exe_path: 'embedded/bin/shards'
@@ -133,7 +135,8 @@ function locate_executables() {
       break;
     case 'windows':
       exes.crystal = {
-        exe_path: 'crystal.exe'
+        exe_path: 'crystal.exe',
+        primary: true
       };
       exes.shards = {
         exe_path: 'shards.exe'
