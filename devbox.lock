@@ -49,51 +49,51 @@
         }
       }
     },
-    "extism-cli@latest": {
-      "last_modified": "2025-09-18T16:33:27Z",
-      "resolved": "github:NixOS/nixpkgs/f4b140d5b253f5e2a1ff4e5506edbf8267724bde#extism-cli",
+    "extism-cli@0.3.9": {
+      "last_modified": "2024-01-14T03:55:27Z",
+      "resolved": "github:NixOS/nixpkgs/dd5621df6dcb90122b50da5ec31c411a0de3e538#extism-cli",
       "source": "devbox-search",
-      "version": "1.6.3",
+      "version": "0.3.9",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/60r5fmjrlalppmma05gkxszixh38jrbm-extism-cli-1.6.3",
+              "path": "/nix/store/j6w0ni3wyi97q6hh4cq3qys6vnxix8ad-extism-cli-0.3.9",
               "default": true
             }
           ],
-          "store_path": "/nix/store/60r5fmjrlalppmma05gkxszixh38jrbm-extism-cli-1.6.3"
+          "store_path": "/nix/store/j6w0ni3wyi97q6hh4cq3qys6vnxix8ad-extism-cli-0.3.9"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/1d38d2ykk8jb4s7dfx4bhbc1gv3ghf2s-extism-cli-1.6.3",
+              "path": "/nix/store/jgn0gxz5m731gf11km6vmc1qfrhad85g-extism-cli-0.3.9",
               "default": true
             }
           ],
-          "store_path": "/nix/store/1d38d2ykk8jb4s7dfx4bhbc1gv3ghf2s-extism-cli-1.6.3"
+          "store_path": "/nix/store/jgn0gxz5m731gf11km6vmc1qfrhad85g-extism-cli-0.3.9"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/nb6vcxa9bdkww713nn3sp5kqmb0ag5h7-extism-cli-1.6.3",
+              "path": "/nix/store/x69vagsnz3r8zvpah72ixl57y945bixw-extism-cli-0.3.9",
               "default": true
             }
           ],
-          "store_path": "/nix/store/nb6vcxa9bdkww713nn3sp5kqmb0ag5h7-extism-cli-1.6.3"
+          "store_path": "/nix/store/x69vagsnz3r8zvpah72ixl57y945bixw-extism-cli-0.3.9"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/1g3dyr9ycvn0jrf4ard20n5279q2sglq-extism-cli-1.6.3",
+              "path": "/nix/store/lssqg3yhhbiaxrh9d8jq2spa06hr52sz-extism-cli-0.3.9",
               "default": true
             }
           ],
-          "store_path": "/nix/store/1g3dyr9ycvn0jrf4ard20n5279q2sglq-extism-cli-1.6.3"
+          "store_path": "/nix/store/lssqg3yhhbiaxrh9d8jq2spa06hr52sz-extism-cli-0.3.9"
         }
       }
     },
