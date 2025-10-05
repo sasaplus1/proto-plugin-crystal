@@ -9,13 +9,6 @@
       "trailingCommas": "none"
     }
   },
-  "linter": {
-    "rules": {
-      "correctness": {
-        "noUnreachable": "off"
-      }
-    }
-  },
   "files": {
     "includes": ["./*.cjs", "./package.json", "./*.ts"]
   }

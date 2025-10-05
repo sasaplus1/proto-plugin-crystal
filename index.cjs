@@ -42,30 +42,13 @@ function load_versions() {
 function download_prebuilt() {
   const input = JSON.parse(Host.inputString());
 
-  // Try to get config - check if Config object exists
-  const debugInfo = { input };
-  try {
-    if (typeof Config !== 'undefined' && Config.get) {
-      debugInfo.host_env_via_Config = Config.get('host_environment');
-    }
-  } catch (e) {
-    debugInfo.config_error = e.message;
-  }
-
-  try {
-    if (Host.getConfig) {
-      debugInfo.host_env_via_Host = Host.getConfig('host_environment');
-    }
-  } catch (e) {
-    debugInfo.host_getConfig_error = e.message;
-  }
-
-  throw new Error(`DEBUG: ${JSON.stringify(debugInfo, null, 2)}`);
-
   const version = input.context.version;
-  const env = input.context.env || {};
-  const os = env.os || 'linux';
-  const arch = env.arch || 'x64';
+
+  // Get host environment from Config
+  const hostEnvStr = Config.get('host_environment');
+  const hostEnv = JSON.parse(hostEnvStr);
+  const os = hostEnv.os;
+  const arch = hostEnv.arch;
 
   const supportedCombinations = {
     linux: ['x64', 'arm64'],
@@ -117,10 +100,10 @@ function download_prebuilt() {
 }
 
 function locate_executables() {
-  const input = JSON.parse(Host.inputString());
-
-  const env = input.context.env || {};
-  const os = env.os || 'linux';
+  // Get host environment from Config
+  const hostEnvStr = Config.get('host_environment');
+  const hostEnv = JSON.parse(hostEnvStr);
+  const os = hostEnv.os;
 
   const exes = {};
 
