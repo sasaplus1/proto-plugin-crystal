@@ -42,6 +42,9 @@ function load_versions() {
 function download_prebuilt() {
   const input = JSON.parse(Host.inputString());
 
+  // Debug: Output entire input structure to see what proto provides
+  throw new Error(`DEBUG INPUT: ${JSON.stringify(input, null, 2)}`);
+
   const version = input.context.version;
   const env = input.context.env || {};
   const os = env.os || 'linux';
