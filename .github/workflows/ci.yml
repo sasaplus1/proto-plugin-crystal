@@ -106,7 +106,7 @@ jobs:
       - run: shards install && crystal run main.cr
         working-directory: test
       - run: proto install crystal latest
-      - run: proto versions crystal --installed | grep -E '^\d+\.\d+\.\d+'
+      - run: proto plugin list --versions crystal --json | jq -r '.crystal.manifest.installed_versions[]' | grep -E '^\d+\.\d+\.\d+'
       - run: echo "1.17.0" > .crystal-version
       - run: proto install
       - run: crystal --version | grep "1.17.0"
