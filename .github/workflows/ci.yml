@@ -109,3 +109,19 @@ jobs:
       - run: echo "1.17.0" > .crystal-version
       - run: proto install
       - run: crystal --version | grep "1.17.0"
+  release:
+    if: github.ref_type == 'tag'
+    needs:
+      - e2e
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: crystal.wasm
+      - run: gh release create ${{ github.ref_name }} crystal.wasm --title ${{ github.ref_name }} --generate-notes
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
