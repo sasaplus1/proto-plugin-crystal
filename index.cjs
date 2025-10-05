@@ -121,9 +121,9 @@ function locate_executables() {
       };
       break;
     case 'macos':
-      // macOS has special layout
+      // macOS bin/crystal is a shell script that sets up environment variables
       exes.crystal = {
-        exe_path: `${prefix}/embedded/bin/crystal`,
+        exe_path: `${prefix}/bin/crystal`,
         primary: true
       };
       exes.shards = {
