@@ -154,7 +154,7 @@ function resolve_version() {
 
   const output = {};
 
-  if (version === 'latest' || version === 'stable') {
+  if (version === 'latest' || version === 'stable' || version === '*') {
     const data = fetchJson(versionsJsonUrl);
     const latest = data.versions.find((v) => v.name !== 'nightly');
 

@@ -126,6 +126,22 @@ describe('resolve_version', () => {
     assert.strictEqual(result.version, 'nightly');
   });
 
+  it('should resolve "*" to a version number', async () => {
+    const result = await callExtism(
+      'resolve_version',
+      {
+        initial: '*'
+      },
+      {
+        allowedHosts: ['crystal-lang.org']
+      }
+    );
+
+    assert.ok(result.version);
+    assert.notStrictEqual(result.version, '*');
+    assert.match(result.version, /^\d+\.\d+\.\d+$/);
+  });
+
   it('should return specific version as-is', async () => {
     const result = await callExtism('resolve_version', {
       initial: '1.10.0'
