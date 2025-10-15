@@ -3,7 +3,7 @@
   "packages": [
     "binaryen@latest",
     "extism-cli@1.6.3",
-    "gh@2.79.0"
+    "gh@2.81.0"
   ],
   "shell": {
     "init_hook": [
