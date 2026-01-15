@@ -1,67 +1,46 @@
-const { spawn } = require('node:child_process');
-const { describe, it } = require('node:test');
+const { describe, it, before, after } = require('node:test');
 const assert = require('node:assert');
+const createPlugin = require('@extism/extism').default;
 
-/**
- * @typedef {Object} CallExtismOptions
- * @property {string[]} [allowedHosts] - Array of allowed host domains
- */
+/** @type {import('@extism/extism').Plugin} */
+let plugin;
 
-/**
- * Call an Extism plugin function
- * @param {string} functionName - The name of the function to call
- * @param {Object|null} [input=null] - Input data to pass to the function
- * @param {CallExtismOptions} [options={}] - Additional options
- * @returns {Promise<any>} The parsed JSON response from the function
- */
-function callExtism(functionName, input = null, options = {}) {
-  return new Promise((resolve, reject) => {
-    const args = ['call', 'crystal.wasm', functionName, '--wasi'];
+/** @type {import('@extism/extism').Plugin} */
+let pluginWithNetwork;
 
-    if (options.allowedHosts && Array.isArray(options.allowedHosts)) {
-      for (const host of options.allowedHosts) {
-        args.push(`--allow-host=${host}`);
-      }
-    }
-
-    if (input) {
-      args.push('--input', JSON.stringify(input));
-    }
-
-    const proc = spawn('extism', args);
-
-    let stdout = '';
-    let stderr = '';
-
-    proc.stdout.on('data', (data) => {
-      stdout += data.toString();
-    });
-
-    proc.stderr.on('data', (data) => {
-      stderr += data.toString();
-    });
-
-    proc.on('close', (code) => {
-      if (code !== 0) {
-        reject(new Error(`Process exited with code ${code}: ${stderr}`));
-      } else {
-        try {
-          resolve(JSON.parse(stdout));
-        } catch (_err) {
-          reject(new Error(`Failed to parse JSON: ${stdout}`));
-        }
-      }
-    });
-
-    proc.on('error', (err) => {
-      reject(err);
-    });
+before(async () => {
+  plugin = await createPlugin('./crystal.wasm', {
+    useWasi: true
   });
+
+  pluginWithNetwork = await createPlugin('./crystal.wasm', {
+    useWasi: true,
+    allowedHosts: ['crystal-lang.org'],
+    runInWorker: true
+  });
+});
+
+after(async () => {
+  if (plugin) await plugin.close();
+  if (pluginWithNetwork) await pluginWithNetwork.close();
+});
+
+/**
+ * Call a plugin function and return parsed JSON
+ * @param {import('@extism/extism').Plugin} p
+ * @param {string} functionName
+ * @param {Object|null} [input=null]
+ * @returns {Promise<any>}
+ */
+async function callPlugin(p, functionName, input = null) {
+  const inputData = input ? JSON.stringify(input) : undefined;
+  const result = await p.call(functionName, inputData);
+  return JSON.parse(new TextDecoder().decode(result.buffer));
 }
 
 describe('register_tool', () => {
   it('should return plugin metadata', async () => {
-    const result = await callExtism('register_tool');
+    const result = await callPlugin(plugin, 'register_tool');
 
     assert.deepStrictEqual(result, {
       name: 'Crystal',
@@ -74,9 +53,7 @@ describe('register_tool', () => {
 
 describe('load_versions', () => {
   it('should fetch versions from API and exclude nightly', async () => {
-    const result = await callExtism('load_versions', null, {
-      allowedHosts: ['crystal-lang.org']
-    });
+    const result = await callPlugin(pluginWithNetwork, 'load_versions');
 
     assert.ok(Array.isArray(result.versions));
     assert.ok(result.versions.length > 0);
@@ -87,15 +64,9 @@ describe('load_versions', () => {
 
 describe('resolve_version', () => {
   it('should resolve "latest" to a version number', async () => {
-    const result = await callExtism(
-      'resolve_version',
-      {
-        initial: 'latest'
-      },
-      {
-        allowedHosts: ['crystal-lang.org']
-      }
-    );
+    const result = await callPlugin(pluginWithNetwork, 'resolve_version', {
+      initial: 'latest'
+    });
 
     assert.ok(result.version);
     assert.notStrictEqual(result.version, 'latest');
@@ -103,15 +74,9 @@ describe('resolve_version', () => {
   });
 
   it('should resolve "stable" to a version number', async () => {
-    const result = await callExtism(
-      'resolve_version',
-      {
-        initial: 'stable'
-      },
-      {
-        allowedHosts: ['crystal-lang.org']
-      }
-    );
+    const result = await callPlugin(pluginWithNetwork, 'resolve_version', {
+      initial: 'stable'
+    });
 
     assert.ok(result.version);
     assert.notStrictEqual(result.version, 'stable');
@@ -119,7 +84,7 @@ describe('resolve_version', () => {
   });
 
   it('should resolve "canary" to "nightly"', async () => {
-    const result = await callExtism('resolve_version', {
+    const result = await callPlugin(plugin, 'resolve_version', {
       initial: 'canary'
     });
 
@@ -127,15 +92,9 @@ describe('resolve_version', () => {
   });
 
   it('should resolve "*" to a version number', async () => {
-    const result = await callExtism(
-      'resolve_version',
-      {
-        initial: '*'
-      },
-      {
-        allowedHosts: ['crystal-lang.org']
-      }
-    );
+    const result = await callPlugin(pluginWithNetwork, 'resolve_version', {
+      initial: '*'
+    });
 
     assert.ok(result.version);
     assert.notStrictEqual(result.version, '*');
@@ -143,7 +102,7 @@ describe('resolve_version', () => {
   });
 
   it('should return specific version as-is', async () => {
-    const result = await callExtism('resolve_version', {
+    const result = await callPlugin(plugin, 'resolve_version', {
       initial: '1.10.0'
     });
 
@@ -153,7 +112,7 @@ describe('resolve_version', () => {
 
 describe('detect_version_files', () => {
   it('should return supported version files', async () => {
-    const result = await callExtism('detect_version_files');
+    const result = await callPlugin(plugin, 'detect_version_files');
 
     assert.deepStrictEqual(result, {
       files: ['.crystal-version', '.tool-versions']
@@ -163,7 +122,7 @@ describe('detect_version_files', () => {
 
 describe('parse_version_file', () => {
   it('should parse .crystal-version file', async () => {
-    const result = await callExtism('parse_version_file', {
+    const result = await callPlugin(plugin, 'parse_version_file', {
       file: '.crystal-version',
       content: '1.10.1\n'
     });
@@ -174,7 +133,7 @@ describe('parse_version_file', () => {
   });
 
   it('should parse .tool-versions file with crystal entry', async () => {
-    const result = await callExtism('parse_version_file', {
+    const result = await callPlugin(plugin, 'parse_version_file', {
       file: '.tool-versions',
       content: 'nodejs 20.0.0\ncrystal 1.11.0\nruby 3.2.0\n'
     });
@@ -185,7 +144,7 @@ describe('parse_version_file', () => {
   });
 
   it('should return empty version for .tool-versions without crystal entry', async () => {
-    const result = await callExtism('parse_version_file', {
+    const result = await callPlugin(plugin, 'parse_version_file', {
       file: '.tool-versions',
       content: 'nodejs 20.0.0\nruby 3.2.0\n'
     });

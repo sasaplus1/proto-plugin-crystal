@@ -1,147 +1,51 @@
 {
   "lockfile_version": "1",
   "packages": {
-    "binaryen@latest": {
-      "last_modified": "2025-11-23T21:50:36Z",
-      "resolved": "github:NixOS/nixpkgs/ee09932cedcef15aaf476f9343d1dea2cb77e261#binaryen",
+    "extism-js@1.5.1": {
+      "last_modified": "2025-12-31T03:27:36Z",
+      "resolved": "github:NixOS/nixpkgs/f665af0cdb70ed27e1bd8f9fdfecaf451260fc55#extism-js",
       "source": "devbox-search",
-      "version": "124",
+      "version": "1.5.1",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/rwaqjljq8myxpbnpgcf39j07f3l4n87m-binaryen-124",
+              "path": "/nix/store/v6vb5w6gscbr18mjmbs01q2q64k34iq6-extism-js-1.5.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/rwaqjljq8myxpbnpgcf39j07f3l4n87m-binaryen-124"
+          "store_path": "/nix/store/v6vb5w6gscbr18mjmbs01q2q64k34iq6-extism-js-1.5.1"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/p8cljv6iwzhrdy6n6p8cky3k80jchqk1-binaryen-124",
+              "path": "/nix/store/nz8xjcaz23ay59hp3vxch1zr55p5ncdx-extism-js-1.5.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/p8cljv6iwzhrdy6n6p8cky3k80jchqk1-binaryen-124"
+          "store_path": "/nix/store/nz8xjcaz23ay59hp3vxch1zr55p5ncdx-extism-js-1.5.1"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/bw8m0fhpzvs8299dn78bajx9n8qxdadm-binaryen-124",
+              "path": "/nix/store/i7r1fjmw058z8cnagkyxm04xqnyvdwhc-extism-js-1.5.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/bw8m0fhpzvs8299dn78bajx9n8qxdadm-binaryen-124"
+          "store_path": "/nix/store/i7r1fjmw058z8cnagkyxm04xqnyvdwhc-extism-js-1.5.1"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/jkg4fw1zwypyrl1567qqyqf6agyw2i2m-binaryen-124",
+              "path": "/nix/store/2dd8gs94hy7qwa03km36qs9rm415c479-extism-js-1.5.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/jkg4fw1zwypyrl1567qqyqf6agyw2i2m-binaryen-124"
-        }
-      }
-    },
-    "extism-cli@1.6.3": {
-      "last_modified": "2025-11-23T21:50:36Z",
-      "resolved": "github:NixOS/nixpkgs/ee09932cedcef15aaf476f9343d1dea2cb77e261#extism-cli",
-      "source": "devbox-search",
-      "version": "1.6.3",
-      "systems": {
-        "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/b6ldvsfwy8lfbzw22d8nrmdy7z71mjqg-extism-cli-1.6.3",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/b6ldvsfwy8lfbzw22d8nrmdy7z71mjqg-extism-cli-1.6.3"
-        },
-        "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/q6w07annipd23xjm6gvsqmz48pl5kx7d-extism-cli-1.6.3",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/q6w07annipd23xjm6gvsqmz48pl5kx7d-extism-cli-1.6.3"
-        },
-        "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/c1hrrsy4r72ff9fzlia3vkzshpdrsi90-extism-cli-1.6.3",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/c1hrrsy4r72ff9fzlia3vkzshpdrsi90-extism-cli-1.6.3"
-        },
-        "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/450ai7q2y96z3294qr77b3hxgdy3yn2a-extism-cli-1.6.3",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/450ai7q2y96z3294qr77b3hxgdy3yn2a-extism-cli-1.6.3"
-        }
-      }
-    },
-    "gh@2.83.1": {
-      "last_modified": "2025-11-23T21:50:36Z",
-      "resolved": "github:NixOS/nixpkgs/ee09932cedcef15aaf476f9343d1dea2cb77e261#gh",
-      "source": "devbox-search",
-      "version": "2.83.1",
-      "systems": {
-        "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/jcfc6p66x7qnrwf2dn83gaar13swpfka-gh-2.83.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/jcfc6p66x7qnrwf2dn83gaar13swpfka-gh-2.83.1"
-        },
-        "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/vr17vpprzabs961dj075z5wl6nw6b4w4-gh-2.83.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/vr17vpprzabs961dj075z5wl6nw6b4w4-gh-2.83.1"
-        },
-        "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/v1xrng4rrjshc9ini30l07rsc2dbi7fh-gh-2.83.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/v1xrng4rrjshc9ini30l07rsc2dbi7fh-gh-2.83.1"
-        },
-        "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/y12yx7z4g4a3jbzh28h6yrpvcf6px5kl-gh-2.83.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/y12yx7z4g4a3jbzh28h6yrpvcf6px5kl-gh-2.83.1"
+          "store_path": "/nix/store/2dd8gs94hy7qwa03km36qs9rm415c479-extism-js-1.5.1"
         }
       }
     },
