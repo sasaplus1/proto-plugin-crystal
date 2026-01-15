@@ -3,11 +3,7 @@
   "packages": [
     "binaryen@latest",
     "extism-cli@1.6.3",
+    "extism-js@1.5.1",
     "gh@2.83.1"
-  ],
-  "shell": {
-    "init_hook": [
-      "./init.sh"
-    ]
-  }
+  ]
 }

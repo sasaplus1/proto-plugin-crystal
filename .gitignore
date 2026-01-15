@@ -162,5 +162,4 @@ vite.config.ts.timestamp-*
 ### sasaplus1/proto-plugin-crystal
 
 /crystal.wasm
-/extism-js*
 /test/lib/
