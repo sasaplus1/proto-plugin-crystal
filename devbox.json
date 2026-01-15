@@ -1,9 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.16.0/.schema/devbox.schema.json",
   "packages": [
-    "binaryen@latest",
-    "extism-cli@1.6.3",
-    "extism-js@1.5.1",
-    "gh@2.83.1"
+    "extism-js@1.5.1"
   ]
 }
