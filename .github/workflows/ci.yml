@@ -91,7 +91,7 @@ jobs:
       - uses: moonrepo/setup-toolchain@65d53643a42a85e876ee676b40318b96d1885fb5 # v0.6.2
         with:
           cache: false
-          proto-version: '~0.54'
+          proto-version: '0.54.2'
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: crystal.wasm
