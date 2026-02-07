@@ -95,10 +95,13 @@ jobs:
         with:
           name: crystal.wasm
       - run: uname -a
+      - run: proto --version
       - run: proto plugin add crystal "file://$GITHUB_WORKSPACE/crystal.wasm"
         env:
           PROTO_CONFIG_MODE: global
       - run: proto plugin info crystal
+        env:
+          PROTO_LOG: trace
       - run: proto versions crystal
       - run: proto install crystal 1.17.1
       - run: proto run crystal -- --version
