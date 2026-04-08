@@ -1,6 +1,6 @@
 {
 	"name": "sasaplus1/proto-plugin-crystal",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"deps": {
 		"extism/moonbit-pdk": "0.47.12"
 	},
