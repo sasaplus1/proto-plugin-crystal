@@ -14,7 +14,7 @@ wasm_out := $(build_dir)/wasm/release/build/main/main.wasm
 
 #-------------------------------------------------------------------------------
 
-$(wasm): $(shell find main -name '*.mbt' -o -name '*.json') moon.mod.json
+$(wasm): $(wildcard main/*.mbt main/*.json) moon.mod.json
 	moon build --target wasm --release
 	cp $(wasm_out) $(wasm)
 
@@ -31,7 +31,7 @@ clean: ## remove build artifacts and test environment
 
 .PHONY: test
 test: $(wasm) ## run proto tests with isolated PROTO_HOME
-	rm -rf $(PROTO_HOME) $(makefile_dir)/.prototools
+	$(RM) -rf $(PROTO_HOME) $(makefile_dir)/.prototools
 	proto plugin add crystal "file://$(makefile_dir)/$(wasm)"
 	proto versions crystal
 	proto install crystal 1.17.1
@@ -39,4 +39,4 @@ test: $(wasm) ## run proto tests with isolated PROTO_HOME
 	crystal --version
 	shards --version
 	proto install crystal latest
-	rm -rf $(PROTO_HOME) $(makefile_dir)/.prototools
+	$(RM) -rf $(PROTO_HOME) $(makefile_dir)/.prototools
