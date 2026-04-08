@@ -9,14 +9,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  lint:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # 6.2.0
+        with:
+          node-version-file: 'package.json'
+      - run: npm ci --ignore-scripts
+        env:
+          NPM_CONFIG_AUDIT: false
+          NPM_CONFIG_PROGRESS: false
+      - run: npx biome ci
   test:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-    strategy:
-      fail-fast: false
-      matrix:
-        command:
-          - npx biome ci
-          - devbox run -- npm test
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -26,11 +36,7 @@ jobs:
       - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # 6.2.0
         with:
           node-version-file: 'package.json'
-      - uses: jetify-com/devbox-install-action@a0d2d53632934ae004f878c840055956d9f741b0 # v0.14.0
-        with:
-          enable-cache: true
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      - uses: chawyehsu/setup-moonup@8b0340aa45016c02c776cbe42a7856b371e610bf # v1.0.0
       - id: npm-cache
         run: echo "dir=$(npm config get cache)" | tee -a "$GITHUB_OUTPUT"
       - id: cache-key
@@ -53,7 +59,10 @@ jobs:
           NPM_CONFIG_PROGRESS: false
           NPM_CONFIG_PREFER_OFFLINE: true
       - run: npm rebuild && npm run prepare --if-present
-      - run: ${{ matrix.command }}
+      - run: moon version --all
+      - run: cd moonbit && moon update && moon install
+      - run: npm run build
+      - run: npm test
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: crystal.wasm
