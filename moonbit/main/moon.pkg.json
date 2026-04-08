@@ -2,7 +2,8 @@
 	"import": [
 		"extism/moonbit-pdk/pdk/host",
 		"extism/moonbit-pdk/pdk/extism",
-		"extism/moonbit-pdk/pdk/config"
+		"extism/moonbit-pdk/pdk/config",
+		"moonbitlang/core/json"
 	],
 	"link": {
 		"wasm": {

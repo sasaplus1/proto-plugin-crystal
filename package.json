@@ -9,7 +9,7 @@
 	},
 	"private": true,
 	"scripts": {
-		"build": "cd moonbit && moon build --target wasm && cp target/wasm/release/build/main/main.wasm ../crystal.wasm",
+		"build": "cd moonbit && moon build --target wasm --release && cp _build/wasm/release/build/main/main.wasm ../crystal.wasm",
 		"check": "biome check --write",
 		"test": "node --test index.test.cjs"
 	}

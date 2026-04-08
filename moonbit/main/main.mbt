@@ -69,7 +69,8 @@ fn parse_tool_versions(content : String) -> String {
   for line in lines {
     let trimmed = line.trim().to_string()
     if trimmed.has_prefix("crystal ") {
-      return trimmed.substring(start=8).trim().to_string()
+      let rest = try { trimmed[8:] } catch { _ => "" }
+      return rest.trim().to_string()
     }
   }
   return ""
