@@ -1,18 +1,16 @@
 {
-  "devDependencies": {
-    "@biomejs/biome": "2.3.11",
-    "@extism/extism": "2.0.0-rc13",
-    "binaryen": "125.0.0"
-  },
-  "engines": {
-    "node": "24",
-    "npm": "11"
-  },
-  "private": true,
-  "scripts": {
-    "build": "extism-js index.cjs -o crystal.wasm",
-    "check": "biome check --write",
-    "pretest": "npm run build",
-    "test": "node --test index.test.cjs"
-  }
+	"devDependencies": {
+		"@biomejs/biome": "2.3.11",
+		"@extism/extism": "2.0.0-rc13"
+	},
+	"engines": {
+		"node": "24",
+		"npm": "11"
+	},
+	"private": true,
+	"scripts": {
+		"build": "cd moonbit && moon build --target wasm && cp target/wasm/release/build/main/main.wasm ../crystal.wasm",
+		"check": "biome check --write",
+		"test": "node --test index.test.cjs"
+	}
 }
