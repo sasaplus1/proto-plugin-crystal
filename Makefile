@@ -13,7 +13,7 @@ $(WASM): $(shell find moonbit -name '*.mbt' -o -name '*.json')
 	cp $(MOONBIT_OUT) $(WASM)
 
 test: $(WASM)
-	rm -rf $(PROTO_HOME)
+	rm -rf $(PROTO_HOME) $(CURDIR)/.prototools
 	proto plugin add crystal "file://$(CURDIR)/$(WASM)"
 	proto versions crystal
 	proto install crystal 1.17.1
@@ -21,7 +21,7 @@ test: $(WASM)
 	crystal --version
 	shards --version
 	proto install crystal latest
-	rm -rf $(PROTO_HOME)
+	rm -rf $(PROTO_HOME) $(CURDIR)/.prototools
 
 clean:
 	rm -rf $(WASM) moonbit/_build $(PROTO_HOME)
