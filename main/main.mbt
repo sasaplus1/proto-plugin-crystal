@@ -23,7 +23,7 @@ pub fn register_tool() -> Int {
   let output : Json = {
     "name": "Crystal",
     "type": "language",
-    "plugin_version": "0.2.0",
+    "plugin_version": "0.2.1",
     "minimum_proto_version": "0.53.0"
   }
   @host.output_json_value(output)
@@ -132,21 +132,21 @@ pub fn resolve_version() -> Int {
 
   let version = get_string(parsed, "initial")
 
-  let resolved = if version == "latest" || version == "stable" || version == "*" {
-    fetch_latest_version(version)
+  if version == "latest" || version == "stable" {
+    let resolved = fetch_latest_version(version)
+    if resolved == "" {
+      return 1
+    }
+    let output : Json = { "version": resolved }
+    @host.output_json_value(output)
   } else if version == "canary" {
-    "nightly"
+    let output : Json = { "version": "nightly" }
+    @host.output_json_value(output)
   } else {
-    version
+    // Concrete versions, *, semver ranges (e.g. ~1.19) — delegate to proto
+    let output : Json = {}
+    @host.output_json_value(output)
   }
-
-  // Check for error from fetch_latest_version
-  if resolved == "" {
-    return 1
-  }
-
-  let output : Json = { "version": resolved }
-  @host.output_json_value(output)
   return 0
 }
 

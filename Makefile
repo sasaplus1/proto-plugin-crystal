@@ -35,6 +35,7 @@ test: $(wasm) ## run proto tests with isolated PROTO_HOME
 	proto plugin add crystal "file://$(makefile_dir)/$(wasm)"
 	proto versions crystal
 	proto install crystal 1.17.1
+	proto pin crystal 1.17.1
 	proto plugin info crystal
 	crystal --version
 	shards --version
