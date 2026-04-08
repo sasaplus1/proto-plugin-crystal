@@ -53,19 +53,19 @@ $ proto install
 
 ### Prerequisites
 
-- [devbox](https://www.jetify.com/devbox)
-- Node.js & npm
+- [MoonBit](https://www.moonbitlang.com/)
+- [proto](https://moonrepo.dev/proto)
 
-### Setup
+### Build
 
 ```bash
-# Enter devbox shell (automatically installs extism-cli, binaryen, gh, and extism-js)
-$ devbox shell
+$ make build
 ```
 
+### Test
+
 ```bash
-$ npm ci
-$ npm run build
+$ make test
 ```
 
 ## License
