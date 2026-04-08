@@ -4,6 +4,10 @@ let versions_json_url : String = "https://crystal-lang.org/api/versions.json"
 
 // http_get sends a GET request and returns (status_code, body_memory).
 // Caller must call body_mem.free() after reading the response.
+//
+// NOTE: We bypass @http.new_request().send() because extism/moonbit-pdk
+// serializes "http_method"/"header" instead of the correct "method"/"headers"
+// expected by the Extism host. This is a known PDK bug as of v0.47.12.
 fn http_get(url : String) -> (Int, @host.Memory) {
   let meta : Json = { "method": "GET", "headers": {}, "url": url }
   let meta_mem = @host.allocate_json_value(meta)
