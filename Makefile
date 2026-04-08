@@ -15,9 +15,9 @@ $(WASM): $(shell find moonbit -name '*.mbt' -o -name '*.json')
 test: $(WASM)
 	rm -rf $(PROTO_HOME)
 	proto plugin add crystal "file://$(CURDIR)/$(WASM)"
-	proto plugin info crystal
 	proto versions crystal
 	proto install crystal 1.17.1
+	proto plugin info crystal
 	crystal --version
 	shards --version
 	proto install crystal latest
