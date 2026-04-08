@@ -8,8 +8,8 @@ makefile_dir := $(dir $(makefile))
 PROTO_HOME := $(makefile_dir)/.proto-home
 export PROTO_HOME
 
-wasm := crystal.wasm
 build_dir := _build
+wasm := crystal.wasm
 wasm_out := $(build_dir)/wasm/release/build/main/main.wasm
 
 #-------------------------------------------------------------------------------
