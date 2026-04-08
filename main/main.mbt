@@ -19,7 +19,7 @@ pub fn register_tool() -> Int {
   let output : Json = {
     "name": "Crystal",
     "type": "language",
-    "plugin_version": "0.1.0",
+    "plugin_version": "0.2.0",
     "minimum_proto_version": "0.53.0"
   }
   @host.output_json_value(output)
