@@ -1,0 +1,22 @@
+{
+	"import": [
+		"extism/moonbit-pdk/pdk/host",
+		"extism/moonbit-pdk/pdk/extism",
+		"extism/moonbit-pdk/pdk/config",
+		"moonbitlang/core/json"
+	],
+	"link": {
+		"wasm": {
+			"exports": [
+				"register_tool",
+				"load_versions",
+				"download_prebuilt",
+				"locate_executables",
+				"resolve_version",
+				"detect_version_files",
+				"parse_version_file"
+			],
+			"export-memory-name": "memory"
+		}
+	}
+}

@@ -9,69 +9,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
+  build:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-    strategy:
-      fail-fast: false
-      matrix:
-        command:
-          - npx biome ci
-          - devbox run -- npm test
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # 6.2.0
-        with:
-          node-version-file: 'package.json'
-      - uses: jetify-com/devbox-install-action@a0d2d53632934ae004f878c840055956d9f741b0 # v0.14.0
-        with:
-          enable-cache: true
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-      - id: npm-cache
-        run: echo "dir=$(npm config get cache)" | tee -a "$GITHUB_OUTPUT"
-      - id: cache-key
-        run: >
-          echo 'suffix=${{ format('{0}-{1}-{2}', runner.os, runner.arch, hashFiles('package-lock.json')) }}'
-          | tee -a "$GITHUB_OUTPUT"
-      - id: restore-cache
-        uses: actions/cache/restore@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
-        with:
-          path: |
-            node_modules
-            ${{ steps.npm-cache.outputs.dir }}
-          key: npm-${{ steps.cache-key.outputs.suffix }}
-          restore-keys: |
-            npm-
-      - if: steps.restore-cache.outputs.cache-hit != 'true'
-        run: npm ci --ignore-scripts
-        env:
-          NPM_CONFIG_AUDIT: false
-          NPM_CONFIG_PROGRESS: false
-          NPM_CONFIG_PREFER_OFFLINE: true
-      - run: npm rebuild && npm run prepare --if-present
-      - run: ${{ matrix.command }}
+      - uses: chawyehsu/setup-moonup@8b0340aa45016c02c776cbe42a7856b371e610bf # v1.0.0
+      - run: moon version --all
+      - run: moon update && moon install
+      - run: make build
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: crystal.wasm
           path: crystal.wasm
           overwrite: true
           retention-days: 1
-      - if: github.ref_name == 'main'
-        uses: actions/cache/save@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
-        with:
-          path: |
-            node_modules
-            ${{ steps.npm-cache.outputs.dir }}
-          key: npm-${{ steps.cache-key.outputs.suffix }}
   e2e:
     name: crystal on ${{ matrix.os }}
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     needs:
-      - test
+      - build
     strategy:
       fail-fast: false
       matrix:
@@ -98,9 +58,9 @@ jobs:
       - run: proto plugin add crystal "file://$GITHUB_WORKSPACE/crystal.wasm"
         env:
           PROTO_CONFIG_MODE: global
-      - run: proto plugin info crystal
       - run: proto versions crystal
       - run: proto install crystal 1.17.1
+      - run: proto plugin info crystal
       - run: proto run crystal -- --version
       - run: crystal --version
       - run: shards --version
